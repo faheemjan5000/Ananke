@@ -1,5 +1,6 @@
 package contacts;
 
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
@@ -14,11 +15,12 @@ public class ContactsApp {
 		Scanner scanner = new Scanner(System.in);
 		String fileName = "/home/faheem/Users.txt";
 		FileWriter fileWriter = new FileWriter(fileName,true); 
+		FileReader fileReader = new FileReader(fileName);
 		UserManager userManager = new UserInFileManager(fileWriter);
 		String i;
 		mainMenu();
 		i= scanner.nextLine();
-		chooseFromMenu(scanner, userManager, i);
+		chooseFromMenu(fileReader,scanner, userManager, i);
 		
 		
 		fileWriter.flush();
@@ -46,7 +48,7 @@ public class ContactsApp {
 		return newUser;
 	}
 	
-	private static void chooseFromMenu(Scanner scanner, UserManager userManager, String i) throws IOException {
+	private static void chooseFromMenu(FileReader fileReader,Scanner scanner, UserManager userManager, String i) throws IOException {
 		User user;
 		switch (i) {
 		case "1" :
@@ -60,6 +62,9 @@ public class ContactsApp {
 		case "3" :
 		 	user = updateUser();
 		    break;
+		case "4" :
+		 	readFile(fileReader);
+		    break;
 		default :
 		System.out.println("Thank you! bye");
 		break;
@@ -67,12 +72,20 @@ public class ContactsApp {
 		}
 	}
 	
+	private static void readFile(FileReader fileReader) throws IOException {
+		while(fileReader.ready()) {
+			System.out.print((char)fileReader.read());
+		}
+		
+	}
+
 	private static void mainMenu() {
 		System.out.println("Choose from the following Menu!");
 		System.out.println();
 		System.out.println("Press 1 to insert a User in File!");
 		System.out.println("Press 2 to remove a User from File!");
 		System.out.println("Press 3 to update a User in File!");
+		System.out.println("Press 4 to read File!");
 		System.out.println("Press 0 to exit!");
 	}
 	
