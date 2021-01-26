@@ -7,15 +7,9 @@ public class User {
 	private String email;
 	private String phoneNumber;
 	
-	public User(String firstName, String lastName, String email, String phoneNumber) {
-		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.phoneNumber = phoneNumber;
+	public User() {
+		
 	}
-	
-	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -47,7 +41,17 @@ public class User {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-
+    
+	public String toString() {
+		StringBuilder sb = new StringBuilder("[ ");
+		sb.append("firstName : ").append(this.firstName);
+		sb.append("; lastName : ").append(this.lastName);
+		sb.append("; email : ").append(this.email);
+		sb.append("; phoneNumber : ").append(this.phoneNumber);
+		sb.append(" ]").append('\n');
+		
+		return sb.toString();
+	}
 
 	
 	
