@@ -33,7 +33,7 @@ public class ParsingXml {
 		for (int i = 0; i < nodeList.getLength(); i++)
 		{
 		 Node node = nodeList.item(i);
-		 System.out.println("");    //Just a separator
+		 System.out.println("");    
 		 if (node.getNodeType() == Node.ELEMENT_NODE)
 		 {
 		    //Print each employee's detail
