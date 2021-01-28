@@ -1,6 +1,9 @@
 package parsing.xml;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,14 +33,54 @@ public class XmlManager {
 		try {
 			//read();
 			//write();
-			writeFromList();
+			//writeFromList();
+			readFromCsvWriteInXmlFile();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 	}
-	
-	
+   public static void readFromCsvWriteInXmlFile() throws IOException, ParserConfigurationException, TransformerException {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+		
+        Document document = builder.newDocument();
+        Element utenti = null;
+        Element utente = null;
+        Element name = null;
+        
+        utenti = document.createElement("utenti");
+        document.appendChild(utenti);
+	   
+	   File file = new File("/home/faheem/Users.txt");
+	   FileReader fileReader = new FileReader(file);
+	   BufferedReader br=new BufferedReader(fileReader);
+	   String line;
+	   while((line=br.readLine())!=null){
+		   String[] arrOfStr = line.split(";", 2); 
+		   utente = document.createElement("utente");
+		   utente.setAttribute("id", arrOfStr[0]);
+		   
+		   name = document.createElement("name");
+		   name.setTextContent(arrOfStr[1]);
+		   
+		   utente.appendChild(name);
+		   utenti.appendChild(utente);
+	   }
+	   TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		Transformer transformer = transformerFactory.newTransformer();
+		DOMSource source = new DOMSource(document);
+		
+		StreamResult result = new StreamResult(new File("/home/faheem/UsersFromCSVFile.xml"));
+
+		StreamResult syso = new StreamResult(System.out);
+
+		transformer.transform(source, result);
+		transformer.transform(source, syso);
+
+		System.out.println("File saved!");
+	   
+   }	
 
 	private static List<Utente> allUsersInList() {
 		List<Utente> userList = new ArrayList<>();
