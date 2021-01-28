@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +31,13 @@ public class XmlManager {
 	
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
 		
+		Utente u = new Utente();
+	
 		try {
-			//read();
-			//write();
-			//writeFromList();
-			readFromCsvWriteInXmlFile();
+			readFroXmlFileWriteInCSvFile();
+			//writeInXmlFile();
+			//writeFromListInXml;
+			//readFromCsvWriteInXmlFile();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -91,7 +94,7 @@ public class XmlManager {
 		return userList;
 	}
 	
-	public static void writeFromList() throws ParserConfigurationException, TransformerException {
+	public static void writeFromListInXml() throws ParserConfigurationException, TransformerException {
 		List<Utente> userList = allUsersInList();
 		
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -134,7 +137,7 @@ public class XmlManager {
 		System.out.println("File saved!");
 	}
 	//Write method
-	public static void write() throws ParserConfigurationException, TransformerException {
+	public static void writeInXmlFile() throws ParserConfigurationException, TransformerException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
 		
@@ -173,12 +176,16 @@ public class XmlManager {
 	
 	
 	//Read method
-	public static void read() throws ParserConfigurationException, SAXException, IOException {
+	public static void readFroXmlFileWriteInCSvFile() throws ParserConfigurationException, SAXException, IOException {
+		File file = new File("/home/faheem/employeesInCSV.txt");
+		FileWriter fileWriter = new FileWriter(file);
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
         
 		Document document = builder.parse(new File("/home/faheem/employees.xml"));
 		document.getDocumentElement().normalize();
+        
+		String id; String firstName,lastName,location;		
 		
 		//root element
 		Element root = document.getDocumentElement();
@@ -195,12 +202,21 @@ public class XmlManager {
 		 {
 		    //Print each employee's detail
 		    Element eElement = (Element) node;
-		    System.out.println("Employee id : "    + eElement.getAttribute("id"));
-		    System.out.println("First Name : "  + eElement.getElementsByTagName("firstName").item(0).getTextContent());
-		    System.out.println("Last Name : "   + eElement.getElementsByTagName("lastName").item(0).getTextContent());
-		    System.out.println("Location : "    + eElement.getElementsByTagName("location").item(0).getTextContent());
+//		    System.out.println("Employee id : "    + eElement.getAttribute("id"));
+//		    System.out.println("First Name : "  + eElement.getElementsByTagName("firstName").item(0).getTextContent());
+//		    System.out.println("Last Name : "   + eElement.getElementsByTagName("lastName").item(0).getTextContent());
+//		    System.out.println("Location : "    + eElement.getElementsByTagName("location").item(0).getTextContent());
+		   id = eElement.getAttribute("id");
+		   firstName = eElement.getElementsByTagName("firstName").item(0).getTextContent();
+		   lastName = eElement.getElementsByTagName("lastName").item(0).getTextContent();
+		   location = eElement.getElementsByTagName("location").item(0).getTextContent();
+		   Employee employee = new Employee(id,firstName,lastName,location);
+		   System.out.println(firstName);
+		   fileWriter.write(employee.toString());
 		 }
 		}
+		fileWriter.flush();
+		fileWriter.close();
 	}
 	
 
